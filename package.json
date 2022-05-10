@@ -1,0 +1,19 @@
+{
+  "name": "myreact-tutorail",
+  "version": "1.0.0",
+  "description": "Some React Demo for understanding React running",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GavynLi/myreact-tutorail.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GavynLi/myreact-tutorail/issues"
+  },
+  "homepage": "https://github.com/GavynLi/myreact-tutorail#readme"
+}
