@@ -30,7 +30,7 @@ const ThemeConfigPanel = ({ isOpen, onClose }) => {
 
       <div className="panel-content">
         <div className="form-group">
-          <label>主题模式</label>
+          <h3>主题模式</h3>
           <div className="mode-toggle">
             <button 
               className={`mode-btn ${theme.mode === 'light' ? 'active' : ''}`}
