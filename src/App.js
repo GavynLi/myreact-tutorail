@@ -11,7 +11,7 @@ function App() {
   return (
     <ThemeProvider>
       <div className="App">
-        <h1>欢迎来到我的仪表板</h1>
+        {/* <h1>欢迎来到我的仪表板</h1> */}
       <Dashboard />
       </div>
       
