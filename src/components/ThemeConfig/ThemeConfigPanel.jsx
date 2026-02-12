@@ -1,11 +1,14 @@
 // 主题配置面板
 // components/ThemeConfig/ThemeConfigPanel.jsx
-import React from 'react';
+import React,{useState} from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import ColorPicker from './ColorPicker';
+import ThemeImportExport from './ThemeImportExport';
 
 const ThemeConfigPanel = ({ isOpen, onClose }) => {
-  const { theme, updateTheme } = useTheme();
+  const { theme, updateTheme,resetTheme } = useTheme();
+  const [activeTab, setActiveTab] = useState('config'); // 'config' 或 'importExport'
+
 
   const handleColorChange = (key, value) => {
     updateTheme({ [key]: value });
@@ -21,14 +24,33 @@ const ThemeConfigPanel = ({ isOpen, onClose }) => {
     updateTheme(updates);
   };
 
+  const handleReset = () => {
+    if (window.confirm('确定要重置为默认主题吗？当前自定义设置将会丢失。')) {
+      resetTheme();
+    }
+  };
+
   return (
     <div className={`theme-panel ${isOpen ? 'open' : ''}`}>
       <div className="panel-header">
         <h3>主题设置</h3>
         <button onClick={onClose}>×</button>
       </div>
-
-      <div className="panel-content">
+      <div className="panel-tabs">
+        <button 
+          className={`tab-btn ${activeTab === 'config' ? 'active' : ''}`}
+          onClick={() => setActiveTab('config')}
+        >
+          ⚙️ 配置主题
+        </button>
+        <button 
+          className={`tab-btn ${activeTab === 'importExport' ? 'active' : ''}`}
+          onClick={() => setActiveTab('importExport')}
+        >
+          📤 导入/导出
+        </button>
+      </div>
+      {/* <div className="panel-content">
         <div className="form-group">
           <h3>主题模式</h3>
           <div className="mode-toggle">
@@ -115,8 +137,136 @@ const ThemeConfigPanel = ({ isOpen, onClose }) => {
             应用主题
           </button>
         </div>
+      </div>*/}
+       <div className="panel-content">
+        {activeTab === 'config' ? (
+          <>
+            {/* <div className="form-group">
+              <label>主题名称</label>
+              <input 
+                type="text" 
+                value={theme.name || ''}
+                onChange={(e) => updateTheme({ name: e.target.value })}
+                placeholder="为您的主题命名"
+              />
+            </div>
+
+            <div className="form-group">
+              <label>主题描述</label>
+              <textarea 
+                value={theme.description || ''}
+                onChange={(e) => updateTheme({ description: e.target.value })}
+                placeholder="描述您的主题风格"
+                rows="2"
+              />
+            </div> */}
+
+            <div className="form-group">
+              <label>主题模式</label>
+              <div className="mode-toggle">
+                <button 
+                  className={`mode-btn ${theme.mode === 'light' ? 'active' : ''}`}
+                  onClick={() => toggleMode()}
+                >
+                  ☀️ 浅色模式
+                </button>
+                <button 
+                  className={`mode-btn ${theme.mode === 'dark' ? 'active' : ''}`}
+                  onClick={() => toggleMode()}
+                >
+                  🌙 深色模式
+                </button>
+              </div>
+            </div>
+
+            <div className="form-group">
+              <label>主色调</label>
+              <ColorPicker 
+                color={theme.primaryColor}
+                onChange={(color) => handleColorChange('primaryColor', color)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>辅色调</label>
+              <ColorPicker 
+                color={theme.secondaryColor}
+                onChange={(color) => handleColorChange('secondaryColor', color)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>背景色</label>
+              <ColorPicker 
+                color={theme.backgroundColor}
+                onChange={(color) => handleColorChange('backgroundColor', color)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>文字色</label>
+              <ColorPicker 
+                color={theme.textColor}
+                onChange={(color) => handleColorChange('textColor', color)}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>圆角大小</label>
+              <input 
+                type="range" 
+                min="0" 
+                max="20" 
+                value={parseInt(theme.borderRadius) || 8}
+                onChange={(e) => handleColorChange('borderRadius', `${e.target.value}px`)}
+              />
+              <span className="range-value">{theme.borderRadius}</span>
+            </div>
+
+            <div className="form-group">
+              <label>间距单位</label>
+              <select 
+                value={theme.spacingUnit}
+                onChange={(e) => handleColorChange('spacingUnit', e.target.value)}
+              >
+                <option value="4px">紧密 (4px)</option>
+                <option value="8px">标准 (8px)</option>
+                <option value="12px">宽松 (12px)</option>
+                <option value="16px">宽敞 (16px)</option>
+              </select>
+            </div>
+
+            
+             <div className="form-group">
+          <label>字体</label>
+          <select 
+            value={theme.fontFamily}
+            onChange={(e) => handleColorChange('fontFamily', e.target.value)}
+          >
+            <option value='-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'>系统字体</option>
+            <option value='"Helvetica Neue", Arial, sans-serif'>Helvetica</option>
+            <option value='Georgia, "Times New Roman", serif'>Georgia</option>
+            <option value='"Courier New", monospace'>等宽字体</option>
+          </select>
+        </div>
+
+            <div className="form-group">
+              <button 
+                className="btn-reset"
+                onClick={handleReset}
+              >
+                ↺ 重置为默认
+              </button>
+              <button className="btn-apply" onClick={onClose}>
+                应用主题
+              </button>
+            </div>
+          </>
+        ) : (
+          <ThemeImportExport />
+        )}
       </div>
-    </div>
+    </div> 
   );
 };
 
